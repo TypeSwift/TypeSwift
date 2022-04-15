@@ -11,6 +11,9 @@
 		C27828BF280737A1002FC72B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27828BE280737A1002FC72B /* ViewController.swift */; };
 		C27828C1280737A2002FC72B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C27828C0280737A2002FC72B /* Assets.xcassets */; };
 		C27828C4280737A2002FC72B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C27828C2280737A2002FC72B /* Main.storyboard */; };
+		C27828CD2809E398002FC72B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27828CC2809E398002FC72B /* WebView.swift */; };
+		C27828CF2809E3A8002FC72B /* NativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27828CE2809E3A8002FC72B /* NativeView.swift */; };
+		C27828D22809E3D9002FC72B /* TypeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27828D12809E3D9002FC72B /* TypeSwift.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +23,9 @@
 		C27828C0280737A2002FC72B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C27828C3280737A2002FC72B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C27828C5280737A2002FC72B /* MacDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacDemo.entitlements; sourceTree = "<group>"; };
+		C27828CC2809E398002FC72B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		C27828CE2809E3A8002FC72B /* NativeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeView.swift; sourceTree = "<group>"; };
+		C27828D12809E3D9002FC72B /* TypeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSwift.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +60,30 @@
 			children = (
 				C27828BC280737A1002FC72B /* AppDelegate.swift */,
 				C27828BE280737A1002FC72B /* ViewController.swift */,
+				C27828CB2809E384002FC72B /* Views */,
+				C27828D02809E3B5002FC72B /* TypeSwift */,
 				C27828C0280737A2002FC72B /* Assets.xcassets */,
 				C27828C2280737A2002FC72B /* Main.storyboard */,
 				C27828C5280737A2002FC72B /* MacDemo.entitlements */,
 			);
 			path = MacDemo;
+			sourceTree = "<group>";
+		};
+		C27828CB2809E384002FC72B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C27828CC2809E398002FC72B /* WebView.swift */,
+				C27828CE2809E3A8002FC72B /* NativeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C27828D02809E3B5002FC72B /* TypeSwift */ = {
+			isa = PBXGroup;
+			children = (
+				C27828D12809E3D9002FC72B /* TypeSwift.swift */,
+			);
+			path = TypeSwift;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +156,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C27828CD2809E398002FC72B /* WebView.swift in Sources */,
+				C27828D22809E3D9002FC72B /* TypeSwift.swift in Sources */,
+				C27828CF2809E3A8002FC72B /* NativeView.swift in Sources */,
 				C27828BF280737A1002FC72B /* ViewController.swift in Sources */,
 				C27828BD280737A1002FC72B /* AppDelegate.swift in Sources */,
 			);
