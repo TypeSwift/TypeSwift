@@ -100,11 +100,15 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
   return swiftCode;
 }
 
+function ensureOutputDirExists(outputDir: string) {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+}
+
 function writeSwiftCodeToFile(filePath: string, swiftCode: string) {
   const outputDir = path.join(__dirname, config.outputDir);
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
-  }
+  ensureOutputDirExists(outputDir);
 
   const fileName = `${config.outputPrefix}${path.basename(filePath, '.ts')}${config.outputSuffix}`;
   const outputFilePath = path.join(outputDir, fileName);
@@ -132,18 +136,43 @@ console.log("Input directory:", inputDir);
 const inputFiles = getAllFiles(inputDir);
 console.log("Input files:", inputFiles);
 
-inputFiles.forEach((filePath: string) => {
-  try {
-    const sourceFile = initializeProject(filePath);
-    const variables = extractVariables(sourceFile);
-    const functions = extractFunctions(sourceFile);
-    const enums = extractEnums(sourceFile);
-    const typeAliases = extractTypeAliases(sourceFile);
-    const swiftCode = generateSwiftCode(variables, functions, enums, typeAliases);
-    writeSwiftCodeToFile(filePath, swiftCode);
-  } catch (error) {
-    console.error(`Error processing file ${filePath}:`, error);
-  }
-});
+if (config.combineIntoSingleFile) {
+  let combinedVariables: string[] = [];
+  let combinedFunctions: any[] = [];
+  let combinedEnums: any[] = [];
+  let combinedTypeAliases: any[] = [];
+
+  inputFiles.forEach((filePath: string) => {
+    try {
+      const sourceFile = initializeProject(filePath);
+      combinedVariables = combinedVariables.concat(extractVariables(sourceFile));
+      combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile));
+      combinedEnums = combinedEnums.concat(extractEnums(sourceFile));
+      combinedTypeAliases = combinedTypeAliases.concat(extractTypeAliases(sourceFile));
+    } catch (error) {
+      console.error(`Error processing file ${filePath}:`, error);
+    }
+  });
+
+  const swiftCode = generateSwiftCode(combinedVariables, combinedFunctions, combinedEnums, combinedTypeAliases);
+  const outputFilePath = path.join(config.outputDir, `${config.singleFileName}${config.outputSuffix}`);
+  ensureOutputDirExists(config.outputDir);
+  fs.writeFileSync(outputFilePath, swiftCode);
+  console.log(`Combined Swift code generated successfully at ${outputFilePath}`);
+} else {
+  inputFiles.forEach((filePath: string) => {
+    try {
+      const sourceFile = initializeProject(filePath);
+      const variables = extractVariables(sourceFile);
+      const functions = extractFunctions(sourceFile);
+      const enums = extractEnums(sourceFile);
+      const typeAliases = extractTypeAliases(sourceFile);
+      const swiftCode = generateSwiftCode(variables, functions, enums, typeAliases);
+      writeSwiftCodeToFile(filePath, swiftCode);
+    } catch (error) {
+      console.error(`Error processing file ${filePath}:`, error);
+    }
+  });
+}
 
 console.log("SwiftGen completed.");

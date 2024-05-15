@@ -2,5 +2,7 @@
   "inputDir": "tests",
   "outputDir": "output",
   "outputPrefix": "",
-  "outputSuffix": ".swift"
+  "outputSuffix": ".swift",
+  "combineIntoSingleFile": true,
+  "singleFileName": "generated"
 }
