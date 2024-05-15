@@ -37,7 +37,8 @@ function extractFunctions(sourceFile: any) {
       name: param.getName(),
       type: convertType(param.getType().getText()),
       default: param.hasInitializer() ? param.getInitializer()?.getText() : undefined
-    }))
+    })),
+    typeParameters: func.getTypeParameters().map((param: any) => param.getName())
   }));
 }
 
@@ -77,38 +78,49 @@ function extractTypeAliases(sourceFile: any) {
  * @returns The generated Swift code as a string.
  */
 function generateSwiftCode(variables: string[], functions: any[], enums: any[], typeAliases: any[]) {
-  let swiftCode = `enum TypeSwift {\n\n  // Variables\n`;
-  variables.forEach(variable => {
-    swiftCode += `  case ${variable}\n`;
-  });
+  let swiftCode = `enum TypeSwift {\n`;
 
-  swiftCode += `\n  // Functions\n`;
-  functions.forEach(func => {
-    const params = func.parameters.map((param: any) => {
-      const type = param.type === 'Optional' ? `${param.type}<${convertType('string')}>` : param.type;
-      const defaultValue = param.default ? ` = ${param.default}` : '';
-      return `_${param.name}: ${type}${defaultValue}`;
-    }).join(', ');
-    swiftCode += `  case ${func.name}(${params.replace(/_/g, '_ ')})\n`;
-  });
-
-  swiftCode += `\n  // Enums\n`;
-  enums.forEach(enumDecl => {
-    swiftCode += `  enum ${enumDecl.name} {\n`;
-    enumDecl.members.forEach((member: any) => {
-      swiftCode += `    case ${member}\n`;
+  if (variables.length > 0) {
+    swiftCode += `\n  // Variables\n`;
+    variables.forEach(variable => {
+      swiftCode += `  case ${variable}\n`;
     });
-    swiftCode += `  }\n`;
-  });
+  }
 
-  swiftCode += `\n  // Type Aliases\n`;
-  typeAliases.forEach(alias => {
-    swiftCode += `  struct ${alias.name} {\n`;
-    alias.properties.forEach((prop: any) => {
-      swiftCode += `    var ${prop.name}: ${prop.type}\n`;
+  if (functions.length > 0) {
+    swiftCode += `\n  // Functions\n`;
+    functions.forEach(func => {
+      const params = func.parameters.map((param: any) => {
+        const type = param.type === 'Optional' ? `${param.type}<${convertType('string')}>` : param.type;
+        const defaultValue = param.default ? ` = ${param.default}` : '';
+        return `_${param.name}: ${type}${defaultValue}`;
+      }).join(', ');
+      const typeParams = func.typeParameters.length > 0 ? `<${func.typeParameters.join(', ')}>` : '';
+      swiftCode += `  case ${func.name}${typeParams}(${params.replace(/_/g, '_ ')})\n`;
     });
-    swiftCode += `  }\n`;
-  });
+  }
+
+  if (enums.length > 0) {
+    swiftCode += `\n  // Enums\n`;
+    enums.forEach(enumDecl => {
+      swiftCode += `  enum ${enumDecl.name} {\n`;
+      enumDecl.members.forEach((member: any) => {
+        swiftCode += `    case ${member}\n`;
+      });
+      swiftCode += `  }\n`;
+    });
+  }
+
+  if (typeAliases.length > 0) {
+    swiftCode += `\n  // Type Aliases\n`;
+    typeAliases.forEach(alias => {
+      swiftCode += `  struct ${alias.name} {\n`;
+      alias.properties.forEach((prop: any) => {
+        swiftCode += `    var ${prop.name}: ${prop.type}\n`;
+      });
+      swiftCode += `  }\n`;
+    });
+  }
 
   swiftCode += `}\n`;
   return swiftCode;
