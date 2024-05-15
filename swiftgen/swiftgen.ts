@@ -112,23 +112,37 @@ function writeSwiftCodeToFile(filePath: string, swiftCode: string) {
   console.log(`Swift code generated successfully for ${filePath} at ${outputFilePath}`);
 }
 
-const inputDir = path.join(__dirname, config.inputDir);
+function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
+  const files = fs.readdirSync(dirPath);
+
+  files.forEach(file => {
+    const fullPath = path.join(dirPath, file);
+    if (fs.statSync(fullPath).isDirectory()) {
+      arrayOfFiles = getAllFiles(fullPath, arrayOfFiles);
+    } else if (file.endsWith('.ts')) {
+      arrayOfFiles.push(fullPath);
+    }
+  });
+
+  return arrayOfFiles;
+}
+
+const inputDir = config.inputDir;
 console.log("Input directory:", inputDir);
-const inputFiles = fs.readdirSync(inputDir).filter(file => file.endsWith('.ts'));
+const inputFiles = getAllFiles(inputDir);
 console.log("Input files:", inputFiles);
 
 inputFiles.forEach((filePath: string) => {
-  const fullFilePath = path.join(inputDir, filePath);
   try {
-    const sourceFile = initializeProject(fullFilePath);
+    const sourceFile = initializeProject(filePath);
     const variables = extractVariables(sourceFile);
     const functions = extractFunctions(sourceFile);
     const enums = extractEnums(sourceFile);
     const typeAliases = extractTypeAliases(sourceFile);
     const swiftCode = generateSwiftCode(variables, functions, enums, typeAliases);
-    writeSwiftCodeToFile(fullFilePath, swiftCode);
+    writeSwiftCodeToFile(filePath, swiftCode);
   } catch (error) {
-    console.error(`Error processing file ${fullFilePath}:`, error);
+    console.error(`Error processing file ${filePath}:`, error);
   }
 });
 
