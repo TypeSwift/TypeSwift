@@ -25,7 +25,7 @@ function extractFunctions(sourceFile: any) {
   }));
 }
 
-function generateSwiftCode(variables: string[], functions: any[]) {
+function generateSwiftCode(variables: string[], functions: any[], enums: any[]) {
   let swiftCode = `enum TypeSwift {\n\n  // Variables\n`;
   variables.forEach(variable => {
     swiftCode += `  case ${variable}\n`;
@@ -39,6 +39,15 @@ function generateSwiftCode(variables: string[], functions: any[]) {
       return `_${param.name}: ${type}${defaultValue}`;
     }).join(', ');
     swiftCode += `  case ${func.name}(${params.replace(/_/g, '_ ')})\n`;
+  });
+
+  swiftCode += `\n  // Enums\n`;
+  enums.forEach(enumDecl => {
+    swiftCode += `  enum ${enumDecl.name} {\n`;
+    enumDecl.members.forEach((member: string) => {
+      swiftCode += `    case ${member}\n`;
+    });
+    swiftCode += `  }\n`;
   });
 
   swiftCode += `}\n`;
@@ -57,6 +66,8 @@ exampleFiles.forEach(filePath => {
     const variables = extractVariables(sourceFile);
     const functions = extractFunctions(sourceFile);
     const swiftCode = generateSwiftCode(variables, functions);
+    const enums = extractEnums(sourceFile);
+    const swiftCode = generateSwiftCode(variables, functions, enums);
     writeSwiftCodeToFile(filePath, swiftCode);
   } catch (error) {
     console.error(`Error processing file ${filePath}:`, error);
