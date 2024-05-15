@@ -1,35 +1,27 @@
+// swiftgen.ts
 import { Project } from "ts-morph";
 import fs from 'fs';
 import path from 'path';
 import { convertType } from './typeMap';
 
-const exampleFiles = ["example.ts", "example1.ts", "example2.ts", "example3.ts", "example4.ts", "example5.ts"];
+console.log("Starting SwiftGen...");
 
-/**
- * Initializes a ts-morph Project and adds the source file at the given path.
- * @param filePath - The path to the TypeScript file.
- * @returns The source file.
- */
+// Read configuration file
+const configPath = path.join(__dirname, 'config.json');
+const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+console.log("Configuration loaded:", config);
+
 function initializeProject(filePath: string) {
   const project = new Project();
   return project.addSourceFileAtPath(filePath);
 }
 
-/**
- * Extracts variable names from the source file.
- * @param sourceFile - The source file to extract variables from.
- * @returns An array of variable names.
- */
 function extractVariables(sourceFile: any) {
   return sourceFile.getVariableStatements()
     .flatMap((statement: any) => statement.getDeclarations().map((decl: any) => decl.getName()));
 }
 
-/**
- * Extracts function details from the source file.
- * @param sourceFile - The source file to extract functions from.
- * @returns An array of function details including names, parameters, and default values.
- */
 function extractFunctions(sourceFile: any) {
   return sourceFile.getFunctions().map((func: any) => ({
     name: func.getName(),
@@ -42,11 +34,6 @@ function extractFunctions(sourceFile: any) {
   }));
 }
 
-/**
- * Extracts enum definitions from the source file.
- * @param sourceFile - The source file to extract enums from.
- * @returns An array of enums with their names and members.
- */
 function extractEnums(sourceFile: any) {
   return sourceFile.getEnums().map((enumDecl: any) => ({
     name: enumDecl.getName(),
@@ -54,11 +41,6 @@ function extractEnums(sourceFile: any) {
   }));
 }
 
-/**
- * Extracts type aliases from the source file.
- * @param sourceFile - The source file to extract type aliases from.
- * @returns An array of type aliases with their names and properties.
- */
 function extractTypeAliases(sourceFile: any) {
   return sourceFile.getTypeAliases().map((alias: any) => ({
     name: alias.getName(),
@@ -69,14 +51,6 @@ function extractTypeAliases(sourceFile: any) {
   }));
 }
 
-/**
- * Generates Swift code for variables, functions, enums, and type aliases.
- * @param variables - An array of variable names.
- * @param functions - An array of function details.
- * @param enums - An array of enum definitions.
- * @param typeAliases - An array of type alias definitions.
- * @returns The generated Swift code as a string.
- */
 function generateSwiftCode(variables: string[], functions: any[], enums: any[], typeAliases: any[]) {
   let swiftCode = `enum TypeSwift {\n`;
 
@@ -126,33 +100,36 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
   return swiftCode;
 }
 
-/**
- * Writes the generated Swift code to a file in the output directory.
- * @param filePath - The path to the TypeScript file.
- * @param swiftCode - The generated Swift code.
- */
 function writeSwiftCodeToFile(filePath: string, swiftCode: string) {
-  const outputDir = path.join(__dirname, 'output');
+  const outputDir = path.join(__dirname, config.outputDir);
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   }
 
-  const fileName = path.basename(filePath, '.ts') + '.swift';
+  const fileName = `${config.outputPrefix}${path.basename(filePath, '.ts')}${config.outputSuffix}`;
   const outputFilePath = path.join(outputDir, fileName);
   fs.writeFileSync(outputFilePath, swiftCode);
   console.log(`Swift code generated successfully for ${filePath} at ${outputFilePath}`);
 }
 
-exampleFiles.forEach(filePath => {
+const inputDir = path.join(__dirname, config.inputDir);
+console.log("Input directory:", inputDir);
+const inputFiles = fs.readdirSync(inputDir).filter(file => file.endsWith('.ts'));
+console.log("Input files:", inputFiles);
+
+inputFiles.forEach((filePath: string) => {
+  const fullFilePath = path.join(inputDir, filePath);
   try {
-    const sourceFile = initializeProject(filePath);
+    const sourceFile = initializeProject(fullFilePath);
     const variables = extractVariables(sourceFile);
     const functions = extractFunctions(sourceFile);
     const enums = extractEnums(sourceFile);
     const typeAliases = extractTypeAliases(sourceFile);
     const swiftCode = generateSwiftCode(variables, functions, enums, typeAliases);
-    writeSwiftCodeToFile(filePath, swiftCode);
+    writeSwiftCodeToFile(fullFilePath, swiftCode);
   } catch (error) {
-    console.error(`Error processing file ${filePath}:`, error);
+    console.error(`Error processing file ${fullFilePath}:`, error);
   }
 });
+
+console.log("SwiftGen completed.");

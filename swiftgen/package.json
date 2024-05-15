@@ -4,7 +4,9 @@
   "description": "Generate typesafe Swift code using input TypeScript code.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-config && npm run copy-tests",
+    "copy-config": "cpx config.json dist/",
+    "copy-tests": "cpx tests/**/* dist/tests",
     "start": "node dist/swiftgen.js"
   },
   "keywords": [],
@@ -15,6 +17,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@types/node": "^20.12.12"
+    "@types/node": "^20.12.12",
+    "cpx": "^1.5.0"
   }
 }

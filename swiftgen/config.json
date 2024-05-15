@@ -1,0 +1,6 @@
+{
+  "inputDir": "tests",
+  "outputDir": "output",
+  "outputPrefix": "",
+  "outputSuffix": ".swift"
+}
