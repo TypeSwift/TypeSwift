@@ -1,0 +1,8 @@
+{
+  "inputDir": "tests",
+  "outputDir": "output",
+  "outputPrefix": "",
+  "outputSuffix": ".swift",
+  "combineIntoSingleFile": true,
+  "singleFileName": "generated"
+}
