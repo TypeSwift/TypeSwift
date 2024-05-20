@@ -1,14 +1,13 @@
-// swiftgen.ts
 import { Project } from "ts-morph";
-import fs from 'fs';
 import path from 'path';
-import { convertType } from './typeMap';
+import { convertType } from './utils/typeMap';
+import { readConfig, writeSwiftCodeToFile, getAllFiles } from './utils/fileUtils';
 
 console.log("Starting SwiftGen...");
 
 // Read configuration file
 const configPath = path.join(__dirname, 'config.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+const config = readConfig(configPath);
 
 console.log("Configuration loaded:", config);
 
@@ -100,79 +99,29 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
   return swiftCode;
 }
 
-function ensureOutputDirExists(outputDir: string) {
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-}
-
-function writeSwiftCodeToFile(filePath: string, swiftCode: string) {
-  const outputDir = path.join(__dirname, config.outputDir);
-  ensureOutputDirExists(outputDir);
-
-  const fileName = `${config.outputPrefix}${path.basename(filePath, '.ts')}${config.outputSuffix}`;
-  const outputFilePath = path.join(outputDir, fileName);
-  fs.writeFileSync(outputFilePath, swiftCode);
-  console.log(`Swift code generated successfully for ${filePath} at ${outputFilePath}`);
-}
-
-function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
-  const files = fs.readdirSync(dirPath);
-
-  files.forEach(file => {
-    const fullPath = path.join(dirPath, file);
-    if (fs.statSync(fullPath).isDirectory()) {
-      arrayOfFiles = getAllFiles(fullPath, arrayOfFiles);
-    } else if (file.endsWith('.ts')) {
-      arrayOfFiles.push(fullPath);
-    }
-  });
-
-  return arrayOfFiles;
-}
-
 const inputDir = config.inputDir;
 console.log("Input directory:", inputDir);
 const inputFiles = getAllFiles(inputDir);
 console.log("Input files:", inputFiles);
 
-if (config.combineIntoSingleFile) {
-  let combinedVariables: string[] = [];
-  let combinedFunctions: any[] = [];
-  let combinedEnums: any[] = [];
-  let combinedTypeAliases: any[] = [];
+let combinedVariables: string[] = [];
+let combinedFunctions: any[] = [];
+let combinedEnums: any[] = [];
+let combinedTypeAliases: any[] = [];
 
-  inputFiles.forEach((filePath: string) => {
-    try {
-      const sourceFile = initializeProject(filePath);
-      combinedVariables = combinedVariables.concat(extractVariables(sourceFile));
-      combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile));
-      combinedEnums = combinedEnums.concat(extractEnums(sourceFile));
-      combinedTypeAliases = combinedTypeAliases.concat(extractTypeAliases(sourceFile));
-    } catch (error) {
-      console.error(`Error processing file ${filePath}:`, error);
-    }
-  });
+inputFiles.forEach((filePath: string) => {
+  try {
+    const sourceFile = initializeProject(filePath);
+    combinedVariables = combinedVariables.concat(extractVariables(sourceFile));
+    combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile));
+    combinedEnums = combinedEnums.concat(extractEnums(sourceFile));
+    combinedTypeAliases = combinedTypeAliases.concat(extractTypeAliases(sourceFile));
+  } catch (error) {
+    console.error(`Error processing file ${filePath}:`, error);
+  }
+});
 
-  const swiftCode = generateSwiftCode(combinedVariables, combinedFunctions, combinedEnums, combinedTypeAliases);
-  const outputFilePath = path.join(config.outputDir, `${config.singleFileName}${config.outputSuffix}`);
-  ensureOutputDirExists(config.outputDir);
-  fs.writeFileSync(outputFilePath, swiftCode);
-  console.log(`Combined Swift code generated successfully at ${outputFilePath}`);
-} else {
-  inputFiles.forEach((filePath: string) => {
-    try {
-      const sourceFile = initializeProject(filePath);
-      const variables = extractVariables(sourceFile);
-      const functions = extractFunctions(sourceFile);
-      const enums = extractEnums(sourceFile);
-      const typeAliases = extractTypeAliases(sourceFile);
-      const swiftCode = generateSwiftCode(variables, functions, enums, typeAliases);
-      writeSwiftCodeToFile(filePath, swiftCode);
-    } catch (error) {
-      console.error(`Error processing file ${filePath}:`, error);
-    }
-  });
-}
+const swiftCode = generateSwiftCode(combinedVariables, combinedFunctions, combinedEnums, combinedTypeAliases);
+writeSwiftCodeToFile(swiftCode, config.outputDir, config.outputFileName, config.outputSuffix);
 
 console.log("SwiftGen completed.");

@@ -1,12 +1,16 @@
-// Generic Types and Promises
-function identity<T>(arg: T): T {
-  return arg;
+// Objects and Type Aliases
+type Point = {
+  x: number;
+  y: number;
+};
+
+const startPoint: Point = { x: 0, y: 0 };
+const endPoint: Point = { x: 10, y: 20 };
+
+function translate(point: Point, dx: number, dy: number): Point {
+  return { x: point.x + dx, y: point.y + dy };
 }
 
-function fetchData(url: string): Promise<string> {
-  return fetch(url).then(response => response.text());
-}
-
-function combine<T, U>(first: T, second: U): [T, U] {
-  return [first, second];
+function printPoint(point: Point): void {
+  console.log(`Point(${point.x}, ${point.y})`);
 }

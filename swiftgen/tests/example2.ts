@@ -1,11 +1,12 @@
-// Arrays and Optional Parameters
-const numbers: number[] = [1, 2, 3, 4, 5];
-const names: string[] = ["Alice", "Bob", "Charlie"];
+// Basic Types
+const delay: number = 1000;
+const message: string = "Hello, world!";
+const isVisible: boolean = true;
 
-function sum(...values: number[]): number {
-  return values.reduce((acc, val) => acc + val, 0);
+function greet(name: string): void {
+  console.log(`Hello, ${name}!`);
 }
 
-function sayHello(name: string = "Guest"): void {
-  console.log(`Hello, ${name}!`);
+function multiply(a: number, b: number): number {
+  return a * b;
 }
