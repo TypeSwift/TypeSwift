@@ -3,7 +3,20 @@ import path from 'path';
 import os from 'os';
 
 export function readConfig(configPath: string) {
-  return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  config.inputDir = resolveDir(config.inputDir);
+  config.outputDir = resolveDir(config.outputDir);
+  return config;
+}
+
+export function resolveDir(dir: string) {
+  // Expand `~` to the home directory
+  if (dir.startsWith('~')) {
+    dir = path.join(os.homedir(), dir.slice(1));
+  }
+
+  // Resolve the directory path
+  return path.isAbsolute(dir) ? dir : path.join(process.cwd(), dir);
 }
 
 export function ensureOutputDirExists(outputDir: string) {
@@ -13,16 +26,8 @@ export function ensureOutputDirExists(outputDir: string) {
 }
 
 export function writeSwiftCodeToFile(swiftCode: string, outputDir: string, outputFileName: string, outputSuffix: string) {
-  // Expand `~` to the home directory
-  if (outputDir.startsWith('~')) {
-    outputDir = path.join(os.homedir(), outputDir.slice(1));
-  }
-
-  // Resolve the output directory
-  const resolvedOutputDir = path.isAbsolute(outputDir) ? outputDir : path.join(process.cwd(), 'dist', outputDir);
-  ensureOutputDirExists(resolvedOutputDir);
-
-  const outputFilePath = path.join(resolvedOutputDir, `${outputFileName}${outputSuffix}`);
+  ensureOutputDirExists(outputDir);
+  const outputFilePath = path.join(outputDir, `${outputFileName}${outputSuffix}`);
   fs.writeFileSync(outputFilePath, swiftCode);
   console.log(`Swift code generated successfully at ${outputFilePath}`);
 }
