@@ -1,9 +1,9 @@
 import { Project } from "ts-morph";
 import path from 'path';
-import { convertType } from './utils/typeMap';
+import fs from 'fs';
 import { readConfig, writeSwiftCodeToFile, getAllFiles } from './utils/fileUtils';
-import { generateSwiftCode } from "./gen/swiftCodeGen";
-
+import { convertType } from "./utils/typeMap";
+import { generateSwiftCode } from './gen/swiftCodeGen';
 
 console.log("Starting SwiftGen...");
 
@@ -12,6 +12,12 @@ const configPath = path.join(__dirname, 'config/config.json');
 const config = readConfig(configPath);
 
 console.log("Configuration loaded:", config);
+
+// Read package.json file
+const packageJsonPath = path.join(__dirname, '..', 'package.json');
+const packageInfo = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+
+console.log("Package information loaded:", packageInfo);
 
 function initializeProject(filePath: string) {
   const project = new Project();
@@ -74,7 +80,7 @@ inputFiles.forEach((filePath: string) => {
   }
 });
 
-const swiftCode = generateSwiftCode(combinedVariables, combinedFunctions, combinedEnums, combinedTypeAliases);
+const swiftCode = generateSwiftCode(combinedVariables, combinedFunctions, combinedEnums, combinedTypeAliases, packageInfo);
 writeSwiftCodeToFile(swiftCode, config.outputDir, config.outputFileName, config.outputSuffix);
 
 console.log("SwiftGen completed.");
