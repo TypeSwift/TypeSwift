@@ -10,8 +10,17 @@
     "start": "node dist/swiftgen.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Justin Bush",
+    "email": "buzsh@users.noreply.github.com",
+    "url": "https://github.com/buzsh"
+  },
+  "homepage": "https://typeswift.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TypeSwift/TypeSwift.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "ts-morph": "^22.0.0",
     "typescript": "^5.4.5"
