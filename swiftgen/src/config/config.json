@@ -1,6 +1,6 @@
 {
   "inputDir": "tests",
-  "outputDir": "~/Downloads/",
+  "outputDir": "output",
   "outputPrefix": "",
   "outputSuffix": ".swift",
   "outputFileName": "TypeSwift"

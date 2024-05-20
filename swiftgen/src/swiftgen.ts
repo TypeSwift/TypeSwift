@@ -95,6 +95,21 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
     });
   }
 
+  // Add the computed property for jsString
+  swiftCode += `\n  // Computed property for jsString\n  var jsString: String {\n    switch self {\n`;
+  
+  variables.forEach(variable => {
+    swiftCode += `    case .${variable}:\n      return "${variable}"\n`;
+  });
+
+  functions.forEach(func => {
+    const params = func.parameters.map((param: any) => `\\(${param.name})`).join(', ');
+    swiftCode += `    case .${func.name}(${func.parameters.map((param: any) => `let ${param.name}`).join(', ')}):\n`;
+    swiftCode += `      return "${func.name}(${params})"\n`;
+  });
+
+  swiftCode += `    }\n  }\n`;
+
   swiftCode += `}\n`;
   return swiftCode;
 }
