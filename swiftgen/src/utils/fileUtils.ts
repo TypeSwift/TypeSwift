@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
 export function readConfig(configPath: string) {
   return JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -12,7 +13,13 @@ export function ensureOutputDirExists(outputDir: string) {
 }
 
 export function writeSwiftCodeToFile(swiftCode: string, outputDir: string, outputFileName: string, outputSuffix: string) {
-  const resolvedOutputDir = path.isAbsolute(outputDir) ? outputDir : path.join(__dirname, outputDir);
+  // Expand `~` to the home directory
+  if (outputDir.startsWith('~')) {
+    outputDir = path.join(os.homedir(), outputDir.slice(1));
+  }
+
+  // Resolve the output directory
+  const resolvedOutputDir = path.isAbsolute(outputDir) ? outputDir : path.join(process.cwd(), 'dist', outputDir);
   ensureOutputDirExists(resolvedOutputDir);
 
   const outputFilePath = path.join(resolvedOutputDir, `${outputFileName}${outputSuffix}`);
