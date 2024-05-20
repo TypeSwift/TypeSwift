@@ -36,9 +36,9 @@ webView.ts(.selectDevice(.Phone))
 
 ## Walkthrough Demo
 
-Creating a native SwiftUI Toolbar item that replaces the functionality of the React NavBar (58 seconds).
+Creating a native SwiftUI Toolbar item that replaces the functionality of the React NavBar in 46 seconds.
 
-https://github.com/TypeSwift/TypeSwift/assets/158503966/4a8655f8-76fd-441e-8de0-9d8e69277c17
+https://github.com/TypeSwift/TypeSwift/assets/158503966/b0bf6afc-157b-4a05-9fdb-331a06d048f5
 
 <p>&nbsp;</p>
 
