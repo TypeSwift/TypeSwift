@@ -68,8 +68,12 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
         const defaultValue = param.default ? ` = ${param.default}` : '';
         return `_${param.name}: ${type}${defaultValue}`;
       }).join(', ');
-      const typeParams = func.typeParameters.length > 0 ? `<${func.typeParameters.join(', ')}>` : '';
-      swiftCode += `  case ${func.name}${typeParams}(${params.replace(/_/g, '_ ')})\n`;
+
+      if (params.length > 0) {
+        swiftCode += `  case ${func.name}(${params.replace(/_/g, '_ ')})\n`;
+      } else {
+        swiftCode += `  case ${func.name}\n`;
+      }
     });
   }
 
@@ -103,9 +107,14 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
   });
 
   functions.forEach(func => {
-    const params = func.parameters.map((param: any) => `\\(${param.name})`).join(', ');
-    swiftCode += `    case .${func.name}(${func.parameters.map((param: any) => `let ${param.name}`).join(', ')}):\n`;
-    swiftCode += `      return "${func.name}(${params})"\n`;
+    const paramNames = func.parameters.map((param: any) => `\\(${param.name})`).join(', ');
+    if (func.parameters.length > 0) {
+      swiftCode += `    case .${func.name}(${func.parameters.map((param: any) => `let ${param.name}`).join(', ')}):\n`;
+      swiftCode += `      return "${func.name}(${paramNames})"\n`;
+    } else {
+      swiftCode += `    case .${func.name}:\n`;
+      swiftCode += `      return "${func.name}()"\n`;
+    }
   });
 
   swiftCode += `    }\n  }\n`;
@@ -113,6 +122,7 @@ function generateSwiftCode(variables: string[], functions: any[], enums: any[], 
   swiftCode += `}\n`;
   return swiftCode;
 }
+
 
 const inputDir = config.inputDir;
 console.log("Input directory:", inputDir);
