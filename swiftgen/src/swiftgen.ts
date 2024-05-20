@@ -6,7 +6,7 @@ import { readConfig, writeSwiftCodeToFile, getAllFiles } from './utils/fileUtils
 console.log("Starting SwiftGen...");
 
 // Read configuration file
-const configPath = path.join(__dirname, 'config.json');
+const configPath = path.join(__dirname, 'config/config.json');
 const config = readConfig(configPath);
 
 console.log("Configuration loaded:", config);
