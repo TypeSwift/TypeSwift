@@ -67,7 +67,10 @@ function generateTypeAliasCases(typeAliases: any[]): string {
 }
 
 function generateJsStringProperty(variables: string[], functions: any[]): string {
-  let code = `\n  // Computed property for jsString\n  var jsString: String {\n    switch self {\n`;
+  let docComment = `  /// A computed property that generates a JavaScript string based on the case of the \`TypeSwift\` enumeration.
+  ///
+  /// This property converts the enumeration case and its associated values (if any) into a string format that can be used to evaluate JavaScript in a \`WKWebView\`.`;
+  let code = `\n${docComment}\n  var jsString: String {\n    switch self {\n`;
 
   variables.forEach(variable => {
     code += `    case .${variable}:\n      return "${variable}"\n`;
@@ -91,6 +94,8 @@ function generateJsStringProperty(variables: string[], functions: any[]): string
 
 export function generateSwiftCode(variables: string[], functions: any[], enums: any[], typeAliases: any[], packageInfo: any) {
   let swiftCode = generateHeader(packageInfo);
+
+  swiftCode += `/// An enumeration of TypeScript identifiers generated to be used in Swift code.\n`
   swiftCode += `enum TypeSwift {\n`;
 
   if (variables.length > 0) {

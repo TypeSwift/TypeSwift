@@ -17,8 +17,6 @@ console.log("Configuration loaded:", config);
 const packageJsonPath = path.join(__dirname, '..', 'package.json');
 const packageInfo = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-console.log("Package information loaded:", packageInfo);
-
 function initializeProject(filePath: string) {
   const project = new Project();
   return project.addSourceFileAtPath(filePath);
