@@ -1,5 +1,5 @@
 # TypeSwift
-A lightweight and typesafe multi-language library built for interfacing with your Node projects using native Swift.
+A lightweight and typesafe code generation library built for interfacing with your Node projects using Swift.
 
 ![Cover](https://github.com/TypeSwift/TypeSwift/assets/158503966/ad793b15-ae1d-461e-b4a6-600470474de5)
 
