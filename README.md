@@ -44,6 +44,8 @@ https://github.com/TypeSwift/TypeSwift/assets/158503966/b0bf6afc-157b-4a05-9fdb-
 
 ## Overview
 
+*Refer to the [TypeSwift Wiki](https://github.com/TypeSwift/TypeSwift/wiki) for full, in-depth documentation.*
+
 There are two main components to this project: **SwiftGen** and **WKExtensions**.
 
 ### SwiftGen
@@ -51,8 +53,11 @@ There are two main components to this project: **SwiftGen** and **WKExtensions**
 A node package that incorporates [ts-morph](https://github.com/dsherret/ts-morph) to fulfill the following purpose:
 
 1. Uses [ts-morph](https://github.com/dsherret/ts-morph) to extract variables, functions, data structures and types from your code
-2. Maps these each type to a Swift equivalent for easy calling
-3. Generates a Swift data structure that allows you to interface with the typesafe code in Swift
+2. Maps each TS type to a Swift equivalent for compatible calling
+3. Generates a Swift data structure for easy interfacing
+4. Stores the compiled JavScript calling method for evaluation in a WebKit object
+
+Identifier extraction techniques are detailed [here](https://github.com/TypeSwift/TypeSwift/wiki/Extraction-Techniques#extracting-variables).
 
 ### WKExtensions
 
@@ -62,7 +67,9 @@ This Swift package allows you to interface with the TypeScript code, from within
 
 An optional custom WebKit object that will allow you to interface with your Node project directly. No setup required. Just plugin and play!
 
-Currently in development. See [ObservableWebView](https://github.com/buzsh/ObservableWebView) for more details on the base.
+Currently in development. See [ObservableWebView](https://github.com/buzsh/ObservableWebView) for more details on the base foundation.
+
+<p>&nbsp;</p>
 
 ## Getting Started
 
@@ -81,9 +88,8 @@ Currently in development. See [ObservableWebView](https://github.com/buzsh/Obser
 {
   "inputDir": "path/to/ts-files",
   "outputDir": "path/to/xcode-proj/TypeSwift",
-  "outputPrefix": "",
-  "outputSuffix": ".swift",
-  "outputFileName": "TypeSwift"
+  "outputFileName": "TypeSwift",
+   "outputSuffix": ".swift",
 }
 ```
 
@@ -99,7 +105,11 @@ npm start
 
 You're ready to start interacting with TypeScript in your Swift code! If you add new TypeScript variables or functions, simply build again to generate an updated file.
 
+<p>&nbsp;</p>
+
 ## Usage
+
+Refer to [Generation Schema by Example](https://github.com/TypeSwift/TypeSwift/wiki/Generation-Schema-by-Example) for more details.
 
 #### Basic Syntax
 
@@ -122,8 +132,6 @@ let result = await webView.anotherPromise()
 ```
 
 <p>&nbsp;</p>
-
-## SwiftGen
 
 https://github.com/TypeSwift/TypeSwift/assets/158503966/655ce073-b6fe-42f6-b991-b67cf60f604d
 
