@@ -3,6 +3,5 @@
   "outputDir": "output",
   "outputPrefix": "",
   "outputSuffix": ".swift",
-  "combineIntoSingleFile": true,
-  "singleFileName": "generated"
+  "outputFileName": "TypeSwift"
 }

@@ -1,0 +1,23 @@
+# Exclude config and environment files
+tsconfig.json
+.gitignore
+.npmignore
+
+# Exclude build scripts and other development files
+dist/
+scripts/
+.eslintrc.js
+.prettierrc
+
+# Exclude Git-related files
+.git/
+
+# Exclude node_modules (not necessary but good practice)
+node_modules/
+
+# Exclude npm debug files
+npm-debug.log
+
+# OS generated files
+.DS_Store
+.DS_Store?

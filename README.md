@@ -7,7 +7,6 @@ A lightweight and typesafe multi-language library built for interfacing with you
 
 ```swift
 enum TypeSwift {
-  // ...
   case toggle()
   case setLabel(_ text: String)
   case addNumbers(_ a: Double, _ b: Double)
@@ -16,6 +15,7 @@ enum TypeSwift {
   enum Device {
     case Phone, Pad, Mac
   }
+
   // ...
 }
 ```
@@ -36,15 +36,15 @@ webView.ts(.selectDevice(.Phone))
 
 ## Walkthrough Demo
 
-Creating a native SwiftUI Toolbar item that replaces the functionality of the React NavBar in 46 seconds.
+Creating a native SwiftUI Toolbar item that replaces the functionality of a React NavBar (46 seconds).
 
 https://github.com/TypeSwift/TypeSwift/assets/158503966/b0bf6afc-157b-4a05-9fdb-331a06d048f5
 
 <p>&nbsp;</p>
 
-## Getting Started
+## Overview
 
-There are two main components to this project: **SwiftGen** and **WK+TypeSwift**.
+There are two main components to this project: **SwiftGen** and **WKExtensions**.
 
 ### SwiftGen
 
@@ -54,13 +54,48 @@ A node package that incorporates [ts-morph](https://github.com/dsherret/ts-morph
 2. Maps these each type to a Swift equivalent for easy calling
 3. Generates a Swift data structure that allows you to interface with the typesafe code in Swift
 
-### WK+TypeSwift
+### WKExtensions
 
 This Swift package allows you to interface with the TypeScript code, from within your Swift code, using a familiar syntax style. The enum data structure allows for certain features, such as auto-completion, in your favorite Swift IDE.
 
 ### TSWebView
 
 An optional custom WebKit object that will allow you to interface with your Node project directly. No setup required. Just plugin and play!
+
+## Getting Started
+
+*Note: I'm very new to NPM! If you have any suggestions for how to improve this flow, please open an issue.*
+
+1. Drag the `TypeSwift/` folder into your Xcode project:
+
+   - Make sure "Copy items if needed" is checked
+   - Select "Great groups"
+
+2. Navigate to `swiftgen/`
+3. Run `npm install`
+4. Locate `config.json` in `src/config` and make the following adjustments:
+
+```json
+{
+  "inputDir": "path/to/ts-files",
+  "outputDir": "export/swift-file/to/path",
+  "outputPrefix": "",
+  "outputSuffix": ".swift",
+  "outputFileName": "TypeSwift"
+}
+```
+
+- `inputDir`: Path to directory containing TypeScript files. Will search recursively. Resolves both relative and absolute paths.
+- `outputDir`: Absolute path to the `TypeSwift/` folder that you dragged into your Xcode project.
+
+5. Build
+
+```npm
+npm run build
+npm start
+```
+
+You're ready to start interacting with TypeScript in your Swift code! If you add new TypeScript variables or functions, simply build again to generate an updated file.
 
 ## Usage
 
@@ -74,7 +109,7 @@ webView.ts(toggle)
 webView.ts(.toggle())
 ```
 
-#### Promises / async await
+#### Promises / async await <sup>coming soon</sup>
 
 ```swift
 webView.somePromise() { result, error
