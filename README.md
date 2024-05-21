@@ -109,7 +109,7 @@ webView.ts(toggle)
 webView.ts(.toggle())
 ```
 
-#### Promises / async await
+#### Promises / async await <sup>coming soon</sup>
 
 ```swift
 webView.somePromise() { result, error
