@@ -7,7 +7,7 @@ A lightweight and typesafe multi-language library built for interfacing with you
 
 ```swift
 enum TypeSwift {
-  case toggle()
+  case toggle
   case setLabel(_ text: String)
   case addNumbers(_ a: Double, _ b: Double)
   case selectDevice(_ device: Device)
@@ -23,7 +23,7 @@ enum TypeSwift {
 Which can then be used in your Swift project as such _(no additional setup required)_:
 
 ```swift
-webView.ts(.toggle())
+webView.ts(.toggle)
 
 webView.ts(.setLabel("Hello, world!"))
 
@@ -62,9 +62,11 @@ This Swift package allows you to interface with the TypeScript code, from within
 
 An optional custom WebKit object that will allow you to interface with your Node project directly. No setup required. Just plugin and play!
 
+Currently in development. See [ObservableWebView](https://github.com/buzsh/ObservableWebView) for more details on the base.
+
 ## Getting Started
 
-*Note: I'm very new to NPM! If you have any suggestions for how to improve this flow, please open an issue.*
+*Note: I'm very new to publishing with NPM! If you have any suggestions for how to improve this flow, please open an issue.*
 
 1. Drag the `TypeSwift/` folder into your Xcode project:
 
@@ -78,7 +80,7 @@ An optional custom WebKit object that will allow you to interface with your Node
 ```json
 {
   "inputDir": "path/to/ts-files",
-  "outputDir": "export/swift-file/to/path",
+  "outputDir": "path/to/xcode-proj/TypeSwift",
   "outputPrefix": "",
   "outputSuffix": ".swift",
   "outputFileName": "TypeSwift"
@@ -102,11 +104,11 @@ You're ready to start interacting with TypeScript in your Swift code! If you add
 #### Basic Syntax
 
 ```swift
-let toggle = TypeSwift.toggle()
+let toggle = TypeSwift.toggle
 webView.ts(toggle)
 
 // or
-webView.ts(.toggle())
+webView.ts(.toggle)
 ```
 
 #### Promises / async await <sup>coming soon</sup>
