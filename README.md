@@ -78,7 +78,7 @@ Currently in development. See [ObservableWebView](https://github.com/buzsh/Obser
 1. Drag the `TypeSwift/` folder into your Xcode project:
 
    - Make sure "Copy items if needed" is checked
-   - Select "Great groups"
+   - Select "Create groups"
 
 2. Navigate to `SwiftGen/`
 3. Run `npm install`
