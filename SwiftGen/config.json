@@ -1,6 +1,6 @@
 {
-  "inputDir": "/Users/jb/Dev/Nessyl/ERP/src/app/(apps)/ai/_views",
-  "outputDir": "~/Downloads/TypeSwift",
+  "inputDir": "/path/to/ts-files/dir",
+  "outputDir": "/path/to/TypeSwift/dir",
   "outputPrefix": "",
   "outputSuffix": ".swift",
   "outputFileName": "TypeSwift",
