@@ -80,7 +80,7 @@ Currently in development. See [ObservableWebView](https://github.com/buzsh/Obser
    - Make sure "Copy items if needed" is checked
    - Select "Great groups"
 
-2. Navigate to `swiftgen/`
+2. Navigate to `SwiftGen/`
 3. Run `npm install`
 4. Locate `config.json` in `src/config` and make the following adjustments:
 
