@@ -1,0 +1,8 @@
+{
+  "inputDir": "/path/to/ts-files/dir",
+  "outputDir": "/path/to/TypeSwift/dir",
+  "outputPrefix": "",
+  "outputSuffix": ".swift",
+  "outputFileName": "TypeSwift",
+  "debug": false
+}

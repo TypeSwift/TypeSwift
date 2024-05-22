@@ -80,9 +80,9 @@ Currently in development. See [ObservableWebView](https://github.com/buzsh/Obser
    - Make sure "Copy items if needed" is checked
    - Select "Great groups"
 
-2. Navigate to `swiftgen/`
+2. Navigate to `SwiftGen/`
 3. Run `npm install`
-4. Locate `config.json` in `src/config` and make the following adjustments:
+4. Modify the `config.json`:
 
 ```json
 {
@@ -93,17 +93,16 @@ Currently in development. See [ObservableWebView](https://github.com/buzsh/Obser
 }
 ```
 
-- `inputDir`: Path to directory containing TypeScript files. Will search recursively. Resolves both relative and absolute paths.
+- `inputDir`: Path to directory containing the TypeScript files. Will search recursively. Resolves both relative and absolute paths.
 - `outputDir`: Absolute path to the `TypeSwift/` folder that you dragged into your Xcode project.
 
-5. Build
+5. Build in the CLI:
 
-```npm
-npm run build
-npm start
+```sh
+swiftgen
 ```
 
-You're ready to start interacting with TypeScript in your Swift code! If you add new TypeScript variables or functions, simply build again to generate an updated file.
+You're ready to start interacting with TypeScript in your Swift code! If you add new TypeScript variables or functions, simply build again with `swiftgen` to generate an updated file.
 
 <p>&nbsp;</p>
 
