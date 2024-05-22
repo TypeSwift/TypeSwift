@@ -6,10 +6,9 @@ Using SwiftGen with TypeSwift to generate typesafe Swift code.
 
 ### Installation
 
-To ensure the `node_modules` are installed, navigate to this directory and run:
+To install this package, navigate to this directory (`cd SwiftGen`) and run:
 
 ```sh
-cd SwiftGen
 npm install
 ```
 
